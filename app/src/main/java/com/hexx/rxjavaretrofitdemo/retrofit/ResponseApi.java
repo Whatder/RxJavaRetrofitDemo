@@ -1,8 +1,11 @@
 package com.hexx.rxjavaretrofitdemo.retrofit;
 
 
+import com.hexx.rxjavaretrofitdemo.bean.DataBean;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
@@ -12,5 +15,5 @@ import retrofit2.http.Path;
 
 public interface ResponseApi {
     @GET("{user}")
-    Call<ResponseBody> getTestData(@Path("user") String user);
+    Call<DataBean> getTestData(@Path("user") String user);
 }
