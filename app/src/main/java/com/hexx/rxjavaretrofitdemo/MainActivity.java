@@ -36,18 +36,19 @@ public class MainActivity extends AppCompatActivity {
     private void getData() {
         //创建retrofit对象
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
+                .baseUrl(ResponseApi.BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         //拿到代理对象
         ResponseApi responseApi = retrofit.create(ResponseApi.class);
 
         //调用接口-Gson解析
-        Call<DataBean> call1 = responseApi.getTestData("");
+        Call<DataBean> call1 = responseApi.getTop250(1, 5);
         call1.enqueue(new Callback<DataBean>() {
             @Override
             public void onResponse(Call<DataBean> call, Response<DataBean> response) {
-                tvResponse.setText(response.body().getCurrent_user_repositories_url());
+                tvResponse.setText(response.body().getTitle()
+                        + "页数:" + response.body().getStart() + "/" + response.body().getTotal() + "页");
             }
 
             @Override

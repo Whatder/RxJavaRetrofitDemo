@@ -8,12 +8,15 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by HE on 2018/1/24.
  */
 
 public interface ResponseApi {
-    @GET("{user}")
-    Call<DataBean> getTestData(@Path("user") String user);
+    String BaseUrl = "http://api.douban.com/";
+
+    @GET("/v2/movie/top250")
+    Call<DataBean> getTop250(@Query("start") int start, @Query("count") int count);
 }
