@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.hexx.rxjavaretrofitdemo.bean.DataBean;
 import com.hexx.rxjavaretrofitdemo.retrofit.ResponseApi;
@@ -19,10 +20,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.Result;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,38 +63,78 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ResponseApi.BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         //拿到代理对象
-        ResponseApi responseApi = retrofit.create(ResponseApi.class);
-
+//        ResponseApi responseApi = retrofit.create(ResponseApi.class);
         //调用接口-Gson解析
-        Call<DataBean> call1 = responseApi.getTop250(start, count);
-        call1.enqueue(new Callback<DataBean>() {
-            @Override
-            public void onResponse(Call<DataBean> call, Response<DataBean> response) {
-                top250Data.addAll(response.body().getSubjects());
-                top250Adapter.notifyDataSetChanged();
+//        Call<DataBean> call1 = responseApi.getTop250(start, count);
+//        call1.enqueue(new Callback<DataBean>() {
+//            @Override
+//            public void onResponse(Call<DataBean> call, Response<DataBean> response) {
+//                top250Data.addAll(response.body().getSubjects());
+//                top250Adapter.notifyDataSetChanged();
+//
+//                if (response.body().getStart() < (response.body().getTotal() / response.body().getCount())) {
+//                    start++;
+//                    canLoadMore = true;
+//                } else {
+//                    canLoadMore = false;
+//                }
+//
+//                if (refreshlayout != null) {
+//                    if (refreshType == REFRESH) {
+//                        refreshlayout.finishRefresh();
+//                    } else if (refreshType == LOAD_MORE) {
+//                        refreshlayout.finishLoadmore();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<DataBean> call, Throwable t) {
+//            }
+//        });
 
-                if (response.body().getStart() < (response.body().getTotal() / response.body().getCount())) {
-                    start++;
-                    canLoadMore = true;
-                } else {
-                    canLoadMore = false;
-                }
 
-                if (refreshlayout != null) {
-                    if (refreshType == REFRESH) {
-                        refreshlayout.finishRefresh();
-                    } else if (refreshType == LOAD_MORE) {
-                        refreshlayout.finishLoadmore();
+        //结合rxjava
+        ResponseApi service = retrofit.create(ResponseApi.class);
+        service.getTop250(start, count)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Result<DataBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
                     }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<DataBean> call, Throwable t) {
-            }
-        });
+                    @Override
+                    public void onNext(Result<DataBean> value) {
+                        top250Data.addAll(value.response().body().getSubjects());
+                        if (value.response().body().getStart() < (value.response().body().getTotal() / value.response().body().getCount())) {
+                            start++;
+                            canLoadMore = true;
+                        } else {
+                            canLoadMore = false;
+                        }
+
+                        if (refreshlayout != null) {
+                            if (refreshType == REFRESH) {
+                                refreshlayout.finishRefresh();
+                            } else if (refreshType == LOAD_MORE) {
+                                refreshlayout.finishLoadmore();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        top250Adapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     private void initRefresh() {
