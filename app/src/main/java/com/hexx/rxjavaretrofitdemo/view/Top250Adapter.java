@@ -42,7 +42,8 @@ public class Top250Adapter extends RecyclerView.Adapter<Top250Adapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         Glide.with(context).load(data.get(position).getImages().getLarge()).into(holder.icon);
         holder.name.setText(data.get(position).getTitle() + "(" + data.get(position).getOriginal_title() + ")");
-        holder.summary.setText(data.get(position).getDirectors().get(0).getName() + data.get(position).getYear());
+        holder.summary.setText(data.get(position).getDirectors().get(0).getName() + " " + data.get(position).getYear());
+        holder.star.setText(data.get(position).getRating().getAverage() + "分");
     }
 
     @Override
@@ -57,6 +58,8 @@ public class Top250Adapter extends RecyclerView.Adapter<Top250Adapter.ViewHolder
         TextView name;
         @BindView(R.id.summary)
         TextView summary;
+        @BindView(R.id.star)
+        TextView star;
         @BindView(R.id.item)
         LinearLayout item;
 

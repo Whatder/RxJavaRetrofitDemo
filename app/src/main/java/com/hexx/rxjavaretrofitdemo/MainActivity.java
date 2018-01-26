@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     List<DataBean.SubjectsBean> top250Data = new ArrayList<>();
     private int start, count = 20;
     private boolean canLoadMore = false;
+    private int REFRESH = -1, LOAD_MORE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
-        getData();
+        getData(null, 0);
         initRefresh();
     }
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         top250recyclerView.setAdapter(top250Adapter);
     }
 
-    private void getData() {
+    private void getData(final RefreshLayout refreshlayout, final int refreshType) {
         //创建retrofit对象
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ResponseApi.BaseUrl)
@@ -76,6 +77,14 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     canLoadMore = false;
                 }
+
+                if (refreshlayout != null) {
+                    if (refreshType == REFRESH) {
+                        refreshlayout.finishRefresh();
+                    } else if (refreshType == LOAD_MORE) {
+                        refreshlayout.finishLoadmore();
+                    }
+                }
             }
 
             @Override
@@ -90,16 +99,14 @@ public class MainActivity extends AppCompatActivity {
             public void onRefresh(RefreshLayout refreshlayout) {
                 start = 0;
                 top250Data.clear();
-                getData();
-                refreshlayout.finishRefresh(2000);
+                getData(refreshlayout, REFRESH);
             }
         });
         top250refreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 if (canLoadMore) {
-                    getData();
-                    refreshlayout.finishLoadmore(2000);
+                    getData(refreshlayout, LOAD_MORE);
                 }
             }
         });
