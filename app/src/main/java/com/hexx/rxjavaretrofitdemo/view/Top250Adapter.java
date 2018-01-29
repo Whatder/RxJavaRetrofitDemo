@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hexx.rxjavaretrofitdemo.R;
-import com.hexx.rxjavaretrofitdemo.bean.DataBean;
+import com.hexx.rxjavaretrofitdemo.bean.Top250Bean;
 
 import java.util.List;
 
@@ -25,9 +25,9 @@ import butterknife.ButterKnife;
 public class Top250Adapter extends RecyclerView.Adapter<Top250Adapter.ViewHolder> {
     private Context context;
     private LayoutInflater inflater;
-    private List<DataBean.SubjectsBean> data;
+    private List<Top250Bean.SubjectsBean> data;
 
-    public Top250Adapter(Context context, List<DataBean.SubjectsBean> data) {
+    public Top250Adapter(Context context, List<Top250Bean.SubjectsBean> data) {
         this.context = context;
         this.data = data;
         this.inflater = LayoutInflater.from(this.context);

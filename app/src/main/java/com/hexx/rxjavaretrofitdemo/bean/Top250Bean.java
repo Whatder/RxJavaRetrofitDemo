@@ -6,7 +6,7 @@ import java.util.List;
  * Created by HE on 2018/1/26.
  */
 
-public class DataBean {
+public class Top250Bean {
 
 
     /**

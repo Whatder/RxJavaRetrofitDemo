@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitHelper {
     public static Retrofit getService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ResponseApi.BaseUrl)
+                .baseUrl(ServiceApi.BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
