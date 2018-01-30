@@ -1,35 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hexx.rxjavaretrofitdemo.MainActivity">
+    android:background="@color/white"
+    android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/top250refreshLayout"
+    <include layout="@layout/pub_toolbar" />
+
+    <android.support.v4.widget.DrawerLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <com.scwang.smartrefresh.header.MaterialHeader
+        <android.support.design.widget.NavigationView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/white" />
 
-        <RelativeLayout
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/top250refreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/top250recyclerView"
+            <com.scwang.smartrefresh.header.MaterialHeader
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            </android.support.v7.widget.RecyclerView>
-        </RelativeLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/top250recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        <com.scwang.smartrefresh.layout.footer.BallPulseFooter
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
 
-
-</LinearLayout>
+            <com.scwang.smartrefresh.layout.footer.BallPulseFooter
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </android.support.v4.widget.DrawerLayout>
+</android.support.design.widget.AppBarLayout>

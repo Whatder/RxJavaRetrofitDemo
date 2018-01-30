@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.hexx.rxjavaretrofitdemo.bean.Top250Bean;
 import com.hexx.rxjavaretrofitdemo.retrofit.RetrofitHelper;
@@ -34,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
     SmartRefreshLayout top250refreshLayout;
     Top250Adapter top250Adapter;
     List<Top250Bean.SubjectsBean> top250Data = new ArrayList<>();
+    @BindView(R.id.tv_toolbar_title)
+    TextView tvToolbarTitle;
+    @BindView(R.id.pub_toolbar)
+    Toolbar pubToolbar;
     private int start, count = 20;
     private boolean canLoadMore = false;
     private int REFRESH = -1, LOAD_MORE = 1;
@@ -43,6 +49,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        setSupportActionBar(pubToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        tvToolbarTitle.setText("电影");
         initView();
         getData(null, 0);
         initRefresh();
