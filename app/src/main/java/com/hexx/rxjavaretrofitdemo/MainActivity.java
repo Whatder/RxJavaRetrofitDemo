@@ -1,6 +1,8 @@
 package com.hexx.rxjavaretrofitdemo;
 
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     TextView tvToolbarTitle;
     @BindView(R.id.pub_toolbar)
     Toolbar pubToolbar;
+    @BindView(R.id.drawerLayout)
+    DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle mToggle;
     private int start, count = 20;
     private boolean canLoadMore = false;
     private int REFRESH = -1, LOAD_MORE = 1;
@@ -51,9 +56,10 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(pubToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mToggle = new ActionBarDrawerToggle(this, drawerLayout, pubToolbar, R.string.drawer_open, R.string.drawer_close);
+        mToggle.syncState();
+        drawerLayout.setDrawerListener(mToggle);
 
         tvToolbarTitle.setText("电影");
         initView();
