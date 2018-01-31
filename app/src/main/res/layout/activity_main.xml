@@ -16,7 +16,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@color/white" />
+            android:background="@color/white">
+
+            <include layout="@layout/layout_main_menu" />
+        </android.support.design.widget.NavigationView>
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
             android:id="@+id/top250refreshLayout"

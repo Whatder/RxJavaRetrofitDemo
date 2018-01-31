@@ -8,6 +8,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hexx.rxjavaretrofitdemo.bean.Top250Bean;
@@ -44,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
     Toolbar pubToolbar;
     @BindView(R.id.drawerLayout)
     DrawerLayout drawerLayout;
+    @BindView(R.id.ivMenuIcon)
+    ImageView ivMenuIcon;
+    @BindView(R.id.lvMenuList)
+    ListView lvMenuList;
     private ActionBarDrawerToggle mToggle;
     private int start, count = 20;
     private boolean canLoadMore = false;
@@ -68,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        String[] items = {"电影", "图书", "FM"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        lvMenuList.setAdapter(adapter);
         top250Adapter = new Top250Adapter(this, top250Data);
         top250recyclerView.setLayoutManager(new LinearLayoutManager(this));
         top250recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
