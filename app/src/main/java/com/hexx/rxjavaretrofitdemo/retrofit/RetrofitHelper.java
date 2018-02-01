@@ -9,12 +9,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RetrofitHelper {
-    public static Retrofit getService() {
+    public static ServiceApi getService() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ServiceApi.BaseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-        return retrofit;
+
+        ServiceApi service = retrofit.create(ServiceApi.class);
+        return service;
     }
 }

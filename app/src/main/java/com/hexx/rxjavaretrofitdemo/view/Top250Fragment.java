@@ -103,7 +103,7 @@ public class Top250Fragment extends Fragment {
     private void getData(final RefreshLayout refreshlayout, final int refreshType) {
         //创建retrofit对象
         //结合rxjava
-        ServiceApi service = RetrofitHelper.getService().create(ServiceApi.class);
+        ServiceApi service = RetrofitHelper.getService();
         service.getTop250(start, count)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

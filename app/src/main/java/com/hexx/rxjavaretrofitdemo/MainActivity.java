@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         mToggle.syncState();
         drawerLayout.setDrawerListener(mToggle);
         //fragment
-        FragmentManager fragmentManager = getFragmentManager();
         top250Fragment = new Top250Fragment();
         bookFragment = new BookFragment();
         initView();
