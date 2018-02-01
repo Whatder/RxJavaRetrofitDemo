@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.hexx.rxjavaretrofitdemo.utils.ToastUtil;
+import com.hexx.rxjavaretrofitdemo.view.BookFragment;
 import com.hexx.rxjavaretrofitdemo.view.Top250Fragment;
 
 import butterknife.BindView;
@@ -29,11 +30,11 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     @BindView(R.id.mainPanel)
     FrameLayout mainPanel;
-    Top250Fragment top250Fragment;
     @BindView(R.id.nav_menu)
     NavigationView navMenu;
     private ActionBarDrawerToggle mToggle;
-    private FragmentTransaction transaction;
+    Top250Fragment top250Fragment;
+    BookFragment bookFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.setDrawerListener(mToggle);
         //fragment
         FragmentManager fragmentManager = getFragmentManager();
-        transaction = fragmentManager.beginTransaction();
         top250Fragment = new Top250Fragment();
+        bookFragment = new BookFragment();
         initView();
     }
 
@@ -59,8 +60,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_movie:
+                        setTop250Fragment();
                         break;
                     case R.id.item_book:
+                        setBookFragment();
                         break;
                     case R.id.item_music:
                         break;
@@ -82,8 +85,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     void setTop250Fragment() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         tvToolbarTitle.setText("Movie");
         transaction.replace(R.id.mainPanel, top250Fragment);
+        transaction.commit();
+    }
+
+    void setBookFragment() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        tvToolbarTitle.setText("Book");
+        transaction.replace(R.id.mainPanel, bookFragment);
         transaction.commit();
     }
 
