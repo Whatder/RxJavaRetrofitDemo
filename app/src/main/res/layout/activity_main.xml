@@ -21,30 +21,9 @@
             <include layout="@layout/layout_main_menu" />
         </android.support.design.widget.NavigationView>
 
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/top250refreshLayout"
+        <FrameLayout
+            android:id="@+id/mainPanel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.scwang.smartrefresh.header.MaterialHeader
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/top250recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </android.support.v7.widget.RecyclerView>
-            </RelativeLayout>
-
-            <com.scwang.smartrefresh.layout.footer.BallPulseFooter
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            android:layout_height="match_parent" />
     </android.support.v4.widget.DrawerLayout>
 </android.support.design.widget.AppBarLayout>
