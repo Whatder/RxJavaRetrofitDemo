@@ -3,6 +3,7 @@ package com.hexx.rxjavaretrofitdemo.view;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,6 +18,7 @@ import com.hexx.rxjavaretrofitdemo.R;
 import com.hexx.rxjavaretrofitdemo.bean.BookResultBean;
 import com.hexx.rxjavaretrofitdemo.retrofit.RetrofitHelper;
 import com.hexx.rxjavaretrofitdemo.retrofit.ServiceApi;
+import com.hexx.rxjavaretrofitdemo.utils.DisplayUtil;
 import com.hexx.rxjavaretrofitdemo.utils.ToastUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
@@ -49,7 +51,7 @@ public class BookFragment extends Fragment {
     private Activity mActivity;
     private List<BookResultBean.BooksBean> bookList = new ArrayList<>();
     private BookAdapter adapter;
-    private int start, count = 10;
+    private int start, count = 20;
 
     @Override
     public void onAttach(Context context) {
@@ -77,13 +79,22 @@ public class BookFragment extends Fragment {
         adapter = new BookAdapter(mActivity, bookList);
         bookRecyclerView.setLayoutManager(new GridLayoutManager(mActivity, 2));
         bookRecyclerView.setAdapter(adapter);
-
+        bookRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.top = DisplayUtil.dp2px(mActivity, 4);
+                outRect.right = DisplayUtil.dp2px(mActivity, 4);
+                outRect.left = DisplayUtil.dp2px(mActivity, 4);
+                outRect.bottom = DisplayUtil.dp2px(mActivity, 4);
+            }
+        });
         getData();
     }
 
     private void getData() {
         ServiceApi service = RetrofitHelper.getService();
-        service.getBookResult("java", start, count)
+        service.getBookResult("android", start, count)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Result<BookResultBean>>() {
