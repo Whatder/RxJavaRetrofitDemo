@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.hexx.rxjavaretrofitdemo.R;
 import com.hexx.rxjavaretrofitdemo.bean.Top250Bean;
@@ -43,6 +45,10 @@ public class Top250Fragment extends Fragment {
     @BindView(R.id.top250refreshLayout)
     SmartRefreshLayout top250refreshLayout;
     Unbinder unbinder;
+    @BindView(R.id.top250panel)
+    LinearLayout top250panel;
+    @BindView(R.id.pub_loading)
+    RelativeLayout pubLoading;
     private Activity mActivity;
     private int start, count = 20;
     private boolean canLoadMore = false;
@@ -62,7 +68,6 @@ public class Top250Fragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_top250, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
-
     }
 
     @Override
@@ -132,6 +137,8 @@ public class Top250Fragment extends Fragment {
 
                     @Override
                     public void onComplete() {
+                        pubLoading.setVisibility(View.GONE);
+                        top250panel.setVisibility(View.VISIBLE);
                         top250Adapter.notifyDataSetChanged();
                     }
                 });
