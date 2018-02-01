@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group_one"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_movie"
+            android:title="Movie" />
+        <item
+            android:id="@+id/item_book"
+            android:title="Book" />
+        <item
+            android:id="@+id/item_music"
+            android:title="Music" />
+    </group>
+    <group android:id="@+id/group_two">
+        <item
+            android:id="@+id/item_about"
+            android:title="About" />
+    </group>
+
+</menu>

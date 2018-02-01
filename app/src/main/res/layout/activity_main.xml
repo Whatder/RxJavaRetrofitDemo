@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -12,18 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.NavigationView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="@color/white">
-
-            <include layout="@layout/layout_main_menu" />
-        </android.support.design.widget.NavigationView>
-
         <FrameLayout
             android:id="@+id/mainPanel"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        <!--必须位于最下方-->
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:theme="@style/Base.ThemeOverlay.AppCompat.Light"
+            app:headerLayout="@layout/layout_menu_head"
+            app:menu="@menu/menu_main" />
     </android.support.v4.widget.DrawerLayout>
 </android.support.design.widget.AppBarLayout>
