@@ -21,6 +21,9 @@ import com.hexx.rxjavaretrofitdemo.retrofit.ServiceApi;
 import com.hexx.rxjavaretrofitdemo.utils.DisplayUtil;
 import com.hexx.rxjavaretrofitdemo.utils.ToastUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +53,10 @@ public class BookFragment extends Fragment {
     Unbinder unbinder;
     private Activity mActivity;
     private List<BookResultBean.BooksBean> bookList = new ArrayList<>();
+    private int REFRESH = -1, LOAD_MORE = 1;
+    private boolean canLoadMore = false;
     private BookAdapter adapter;
-    private int start, count = 20;
+    private int start=1, count = 20;
 
     @Override
     public void onAttach(Context context) {
@@ -89,10 +94,11 @@ public class BookFragment extends Fragment {
                 outRect.bottom = DisplayUtil.dp2px(mActivity, 4);
             }
         });
-        getData();
+        initRefresh();
+        getData(null, 0);
     }
 
-    private void getData() {
+    private void getData(final RefreshLayout refreshlayout, final int refreshType) {
         ServiceApi service = RetrofitHelper.getService();
         service.getBookResult("android", start, count)
                 .subscribeOn(Schedulers.io())
@@ -108,6 +114,19 @@ public class BookFragment extends Fragment {
                         if (result.response().body() == null)
                             return;
                         bookList.addAll(result.response().body().getBooks());
+                        if (result.response().body().getStart() < (result.response().body().getTotal() / result.response().body().getCount())) {
+                            start++;
+                            canLoadMore = true;
+                        } else {
+                            canLoadMore = false;
+                        }
+                        if (refreshlayout != null) {
+                            if (refreshType == REFRESH) {
+                                refreshlayout.finishRefresh();
+                            } else if (refreshType == LOAD_MORE) {
+                                refreshlayout.finishLoadmore();
+                            }
+                        }
                     }
 
                     @Override
@@ -123,5 +142,24 @@ public class BookFragment extends Fragment {
                     }
                 });
 
+    }
+
+    private void initRefresh() {
+        bookRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                start = 1;
+                bookList.clear();
+                getData(refreshlayout, REFRESH);
+            }
+        });
+        bookRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                if (canLoadMore) {
+                    getData(refreshlayout, LOAD_MORE);
+                }
+            }
+        });
     }
 }

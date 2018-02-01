@@ -38,8 +38,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.setIsRecyclable(false);
         Glide.with(mContext).load(data.get(position).getImages().getLarge()).into(holder.iconBook);
-        holder.summaryBook.setText(data.get(position).getTitle() + "\n" + data.get(position).getPublisher() );
+        holder.summaryBook.setText(data.get(position).getTitle() + "\n" + data.get(position).getPublisher());
     }
 
     @Override
